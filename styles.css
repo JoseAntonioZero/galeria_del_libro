@@ -133,8 +133,8 @@ body{
     height:9%;
   }
   .gallery.old .book::before{
-    font-size:0.7rem;
-    width:25%;
+    font-size:0.6rem;
+    width:27%;
     height:10%;
   }
     .gallery.nonew .book::before{
