@@ -28,7 +28,6 @@ body{
 @media (min-width:1200px){
   .gallery{grid-template-columns:repeat(5,1fr);}
 }
-
 /* --- Tarjeta libro --- */
 .book{
   background:#fff;
@@ -56,4 +55,92 @@ body{
   margin:2px 0;
   font-size:14px;
   color:#555;
+}
+
+/*—- Etiqueta “Oferta” en la esquina —-*/
+.book{                     /* el contenedor de la portada */
+  position:relative;       /* referencia para el pseudo-elemento */
+}
+
+.gallery.new .book::before{             /* círculo rojo */
+  content:"NUEVO";
+  position:absolute;
+  top:0px;                 /* separa del borde */
+  left:0px;
+  width:20%;
+  height:10%;
+  border-radius:32.8%;
+  background:#e53935;      /* color del círculo */
+  color:#fff;
+  font-size:80%;
+  font-weight:bold;
+  display:flex;            /* centra el texto */
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;     /* no bloquea el clic en la imagen */
+  z-index:1;               /* queda por encima de la foto */
+}
+
+.gallery.nonew .book::before{             /* círculo rojo */
+  content:"SEMI NUEVO";
+  position:absolute;
+  top:0px;                 /* separa del borde */
+  left:0px;
+  width:20%;
+  height:10%;
+  border-radius:32.8%;
+  background:#e53935;      /* color del círculo */
+  color:#fff;
+  font-size:80%;
+  font-weight:bold;
+  display:flex;            /* centra el texto */
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;     /* no bloquea el clic en la imagen */
+  z-index:1;               /* queda por encima de la foto */
+}
+
+
+.gallery.old .book::before{             /* círculo rojo */
+  content:"VINTAGE";
+  position:absolute;
+  top:0px;                 /* separa del borde */
+  left:0px;
+  width:20%;
+  height:10%;
+  border-radius:32.8%;
+  background:#e53935;      /* color del círculo */
+  color:#fff;
+  font-size:80%;
+  font-weight:bold;
+  display:flex;            /* centra el texto */
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;     /* no bloquea el clic en la imagen */
+  z-index:1;               /* queda por encima de la foto */
+}
+
+
+/*  ≥600 px → 3 col */
+@media (max-width:700px){
+
+  .book{                     /* el contenedor de la portada */
+    position:relative;       /* referencia para el pseudo-elemento */
+  }
+  .gallery.new .book::before{
+    font-size:0.7rem;
+    width:23%;
+    height:9%;
+  }
+  .gallery.old .book::before{
+    font-size:0.7rem;
+    width:25%;
+    height:10%;
+  }
+    .gallery.nonew .book::before{
+    font-size:0.7rem;
+    width:25%;
+    height:10%;
+  }
+
 }
