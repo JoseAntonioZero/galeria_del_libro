@@ -10,6 +10,7 @@ body{
 .gallery{
   display:grid;
   gap:20px;
+  row-gap: 30px;
   /* siempre, como mínimo, 2 columnas */
   grid-template-columns:repeat(2,minmax(0,1fr));
 }
@@ -40,7 +41,9 @@ body{
 
 .book img{
   width:100%;          /* llena toda la tarjeta */
+  /*height:auto;*/
   height:auto;
+  max-height: 60vh;
   border-radius:5px;
 }
 
@@ -121,6 +124,42 @@ body{
 }
 
 
+/* El contenedor de cada libro se comporta como columna */
+.book{
+  display: flex;
+  flex-direction: column;
+  height: 100%;          /* asegura altura completa de la tarjeta */
+}
+
+/* La zona de detalles ocupa todo el alto disponible */
+.book .details{
+  flex: 1;               /* llena el espacio sobrante */
+  display: flex;
+  flex-direction: column;
+}
+
+
+.buy-btn{
+  display:inline-flex;          /* habilita centrado */
+  align-items:center;
+  justify-content:center;
+  width:50%;
+  padding:0.75rem 1rem;
+    background-color: #ffe01b;
+    border-color: #e53935;
+    color: black;
+    font-size: 80%;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-style: hidden;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-top: auto;
+    align-self: center;
+    
+}
+
+
 /*  ≥600 px → 3 col */
 @media (max-width:700px){
 
@@ -142,6 +181,11 @@ body{
     width:25%;
     height:10%;
   }
+  .buy-btn{
+    font-size: 80%;
+    font-weight: normal; 
+    
+}
 
 }
 
