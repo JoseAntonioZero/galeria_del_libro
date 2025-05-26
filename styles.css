@@ -1,0 +1,59 @@
+/* --- Base --- */
+body{
+  font-family:sans-serif;
+  margin:0;
+  padding:20px;
+  background:#f5f5f5;
+}
+
+/* --- Galería --- */
+.gallery{
+  display:grid;
+  gap:20px;
+  /* siempre, como mínimo, 2 columnas */
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+/*  ≥600 px → 3 col */
+@media (min-width:600px){
+  .gallery{grid-template-columns:repeat(3,1fr);}
+}
+
+/*  ≥900 px → 4 col */
+@media (min-width:900px){
+  .gallery{grid-template-columns:repeat(4,1fr);}
+}
+
+/*  ≥1200 px → 5 col */
+@media (min-width:1200px){
+  .gallery{grid-template-columns:repeat(5,1fr);}
+}
+
+/* --- Tarjeta libro --- */
+.book{
+  background:#fff;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  text-align:center;
+  padding:10px;
+}
+
+.book img{
+  width:100%;          /* llena toda la tarjeta */
+  height:auto;
+  border-radius:5px;
+}
+
+.details{margin-top:10px;}
+
+.details h3{
+  margin:5px 0;
+  font-size:16px;
+}
+
+.details p{
+  margin:2px 0;
+  font-size:14px;
+  color:#555;
+}
