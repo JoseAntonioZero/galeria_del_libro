@@ -764,24 +764,32 @@
 
 
 <script>
-const lightbox   = document.getElementById('lightbox');
-const lightImg   = lightbox.querySelector('img');
+const lightbox = document.getElementById('lightbox');
+const lightImg = lightbox.querySelector('img');
 
 document.querySelectorAll('.gallery img').forEach(img=>{
   img.style.cursor='zoom-in';
   img.addEventListener('click',()=>{
     lightImg.src = img.src;
     lightbox.style.display='flex';
+    history.pushState({lb:1}, '');      // ① agrega un estado al abrir
   });
 });
 
 function closeBox(){
   lightbox.style.display='none';
   lightImg.src='';
+  if (history.state && history.state.lb) history.back(); // ② vuelve atrás si vino del lightbox
 }
+
 lightbox.addEventListener('click', closeBox);
 document.addEventListener('keyup', e => { if(e.key==='Escape') closeBox(); });
+
+window.addEventListener('popstate', () => {    // ③ clic en “atrás” ↓
+  if (lightbox.style.display==='flex') closeBox(); // ④ cierra sin recargar
+});
 </script>
+
     
 </body>
 </html>
