@@ -34,7 +34,7 @@
         <div class="book">
             <img alt="#" src="https://m.media-amazon.com/images/I/81LqYLufQOL.jpg" />
             <div class="details">
-                <h3>Pack Distopias Maestras: 1984, Fahrenheit 451, Un mundo Feliz</h3>
+                <h3>Pack Distopías Maestras: 1984, Fahrenheit 451, Un mundo Feliz</h3>
                 <p>Debolsillo</p>
                 <p>s/ 110</p>
             </div>
@@ -478,7 +478,7 @@
         <div class="book">
             <img alt="#" src="https://www.penguinlibros.com/pe/5256288-large_default/relato-de-un-naufrago-col.jpg" />
             <div class="details">
-                <h3>Relatos de un Náufrago</h3>
+                <h3>Relato de un Náufrago</h3>
                 <p>Gabriel García Márquez</p>
                 <p>Editorial Sudamericana Penguin Random House</p>
                 <p>s/ 19</p>
@@ -760,6 +760,28 @@
             </div>
         </div>
     </div>
-</body>
 
+<script>
+document.querySelectorAll('.gallery img').forEach(img => {
+  img.style.cursor = 'zoom-in';               // feedback visual opcional
+
+  img.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      /* ⇢ Pantalla completa */
+      (img.requestFullscreen ||             // estándar
+       img.webkitRequestFullscreen ||       // Safari
+       img.msRequestFullscreen              // IE / Edge antiguo
+      ).call(img);
+    } else {
+      /* ⇢ Salir (ESC también funciona) */
+      (document.exitFullscreen ||
+       document.webkitExitFullscreen ||
+       document.msExitFullscreen
+      ).call(document);
+    }
+  });
+});
+</script>
+    
+</body>
 </html>
