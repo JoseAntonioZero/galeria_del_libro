@@ -760,26 +760,27 @@
         </div>
     </div>
 
-<script>
-document.querySelectorAll('.gallery img').forEach(img => {
-  img.style.cursor = 'zoom-in';               // feedback visual opcional
+    <div id="lightbox"><img src="" alt=""></div>
 
-  img.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      /* ⇢ Pantalla completa */
-      (img.requestFullscreen ||             // estándar
-       img.webkitRequestFullscreen ||       // Safari
-       img.msRequestFullscreen              // IE / Edge antiguo
-      ).call(img);
-    } else {
-      /* ⇢ Salir (ESC también funciona) */
-      (document.exitFullscreen ||
-       document.webkitExitFullscreen ||
-       document.msExitFullscreen
-      ).call(document);
-    }
+
+<script>
+const lightbox   = document.getElementById('lightbox');
+const lightImg   = lightbox.querySelector('img');
+
+document.querySelectorAll('.gallery img').forEach(img=>{
+  img.style.cursor='zoom-in';
+  img.addEventListener('click',()=>{
+    lightImg.src = img.src;
+    lightbox.style.display='flex';
   });
 });
+
+function closeBox(){
+  lightbox.style.display='none';
+  lightImg.src='';
+}
+lightbox.addEventListener('click', closeBox);
+document.addEventListener('keyup', e => { if(e.key==='Escape') closeBox(); });
 </script>
     
 </body>

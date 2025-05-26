@@ -144,3 +144,20 @@ body{
   }
 
 }
+
+
+  /* lightbox oculto */
+  #lightbox{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.8);
+    display:none;            /* se muestra con JS */
+    align-items:center; justify-content:center;
+    cursor:zoom-out;
+    z-index:1000;
+  }
+  #lightbox img{
+    max-width:90vw;          /* se “maximiza” sin fullscreen */
+    max-height:90vh;
+    border-radius:6px;
+    box-shadow:0 4px 16px rgba(0,0,0,.4);
+  }
