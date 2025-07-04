@@ -6,12 +6,14 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>Galería de Libros</title>
     <link href="./styles.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7"></script>
 </head>
 
 <body>
+    <input id="buscador" type="search" placeholder="Buscar libros…" autocomplete="off" style="width:100%;padding:8px;margin-bottom:1rem">
     <h1>LIBROS NUEVOS</h1>
     <div class="gallery new">
-    
+
         <!-- comentario
             <div class="book">
                 <img alt="#" src="https://m.media-amazon.com/images/I/719+9KHLVRL._AC_UF1000,1000_QL80_.jpg" />
@@ -29,7 +31,8 @@
                 src="https://www.albaeditorial.es/wp-content/uploads/2020/10/9788490653517-crimen-y-castigo-alba-editorial.jpg" />
             <div class="details">
                 <h3>Crimen y Castigo</h3>
-                <p>Fiodor Dostoievski</p>      <p>Alba Maior</p>
+                <p>Fiodor Dostoievski</p>
+                <p>Alba Maior</p>
                 <p>s/ 110</p><button class="buy-btn">COMPRAR</button>
             </div>
         </div>
@@ -81,7 +84,7 @@
                 <p>s/ 79</p><button class="buy-btn">COMPRAR</button>
             </div>
         </div>
-                        <div class="book">
+        <div class="book">
             <img alt="#" src="https://www.penguinlibros.com/es/4457590-large_default/la-vida-breve.webp" />
             <div class="details">
                 <h3>La Vida Breve (edición conmemorativa rae)</h3>
@@ -867,7 +870,40 @@
             window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
         });
     </script>
+    <script>
+        /* ---------- preparar índice ---------- */
+        const books = Array.from(document.querySelectorAll('.book'));
 
+        // extrae campos de cada libro y conserva referencia al elemento DOM
+        const dataset = books.map(el => {
+            const title = el.querySelector('h3').textContent;
+            const meta = Array.from(el.querySelectorAll('.details p'))
+                .map(p => p.textContent)
+                .join(' ');
+            return { title, meta, el };        // el = elemento para luego mostrar/ocultar
+        });
+
+        const fuse = new Fuse(dataset, {
+            keys: ['title', 'meta'],
+            threshold: 0.4                     // ajusta la “fuzziness” (0 exacto, 1 permisivo)
+        });
+
+        /* ---------- buscar y mostrar ---------- */
+        const $input = document.getElementById('buscador');
+
+        $input.addEventListener('input', e => {
+            const q = e.target.value.trim();
+
+            // 1. decide qué elementos coinciden
+            const matches = q ? fuse.search(q).map(r => r.item.el) : books;
+
+            // 2. oculta todo…
+            books.forEach(el => el.style.display = 'none');
+
+            // …y muestra solo los coincidentes
+            matches.forEach(el => el.style.display = '');
+        });
+    </script>
 
 </body>
 
