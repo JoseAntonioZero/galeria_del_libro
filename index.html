@@ -10,7 +10,20 @@
 </head>
 
 <body>
-    <input id="buscador" type="search" placeholder="Buscar libros…" autocomplete="off" style="width:100%;padding:8px;margin-bottom:1rem">
+    <input id="buscador" type="search" placeholder="Buscar libros…" autocomplete="off"
+        style="width:100%;padding:8px;margin-bottom:1rem">
+
+    <div id="ordering-controls" style="margin-bottom:1rem">
+        <button id="sort-price" data-order="desc">
+            Ordenar por precio ↓
+        </button>
+
+        <!-- aparece sólo cuando el ordenamiento está activo -->
+        <button id="clear-sort" style="display:none">
+            Quitar ordenamiento
+        </button>
+    </div>
+
     <h1>LIBROS NUEVOS</h1>
     <div class="gallery new">
 
@@ -823,6 +836,25 @@
 
     <div id="lightbox"><img src="" alt=""></div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Selecciona y agrega la clase newbook a los libros en la sección #new
+            document.querySelectorAll(".new .book").forEach(book => {
+                book.classList.add("newbook");
+            });
+
+            // Selecciona y agrega la clase nonewbook a los libros en la sección #nonew
+            document.querySelectorAll(".nonew .book").forEach(book => {
+                book.classList.add("nonewbook");
+            });
+
+            // Selecciona y agrega la clase oldbook a los libros en la sección #old
+            document.querySelectorAll(".old .book").forEach(book => {
+                book.classList.add("oldbook");
+            });
+        });
+    </script>
+
 
     <script>
         const lightbox = document.getElementById('lightbox');
@@ -902,6 +934,121 @@
 
             // …y muestra solo los coincidentes
             matches.forEach(el => el.style.display = '');
+        });
+    </script>
+
+
+    <script>
+        /* ---------- auxiliar: precio numérico ---------- */
+        function getPrice(bookEl) {
+            const priceText = bookEl
+                .querySelector('.details p:last-of-type')
+                .textContent;                   // «s/ 130»
+            const num = parseFloat(priceText.replace(/[^\d.]/g, ''));
+            return isNaN(num) ? 0 : num;
+        }
+
+        /* ---------- refs ---------- */
+        const sortBtn = document.getElementById('sort-price');
+        const clearBtn = document.getElementById('clear-sort');
+        const galleries = [...document.querySelectorAll('.gallery')]; // 3 secciones
+        const headings = galleries.map(g => g.previousElementSibling) // sus <h1>
+
+        let sortedBox = null;   // se crea cuando haga falta
+
+        /* ---------- helpers ---------- */
+        function hideSections() {
+            galleries.forEach(g => g.style.display = 'none');
+            headings.forEach(h => h.style.display = 'none');
+        }
+
+        function showSections() {
+            galleries.forEach(g => g.style.display = '');
+            headings.forEach(h => h.style.display = '');
+        }
+
+        function createSortedBox() {
+            sortedBox = document.createElement('div');
+            sortedBox.id = 'sorted-gallery';
+            sortedBox.className = 'gallery sorted';
+            // mismo look que las otras galerías (flex/grid…) vía CSS
+            document.getElementById('ordering-controls')
+                .insertAdjacentElement('afterend', sortedBox);
+        }
+
+        /* ---------- ordenar / alternar asc–desc ---------- */
+        sortBtn.addEventListener('click', () => {
+            // 1. Creamos contenedor si no existe
+            if (!sortedBox) createSortedBox();
+
+            // 2. Tomamos TODOS los libros y recordamos su sección original
+            const allBooks = [...document.querySelectorAll('.book')];
+            allBooks.forEach(b => {
+                if (!b.dataset.origParent) {        // se guarda 1 vez
+                    b.dataset.origParent = '.' + [...b.parentElement.classList].join('.');
+                }
+            });
+
+            // 3. Ordenamos
+            const order = sortBtn.dataset.order; // "asc" | "desc"
+            const sorted = allBooks.sort((a, b) => {
+                const diff = getPrice(a) - getPrice(b);
+                return order === 'asc' ? diff : -diff;
+            });
+
+            // 4. Montamos vista ordenada
+            hideSections();
+            sortedBox.innerHTML = '';             // limpiamos si ya había contenido
+            sorted.forEach(b => sortedBox.appendChild(b));
+            sortedBox.style.display = '';         // se muestra
+            clearBtn.style.display = '';         // aparece botón “Quitar ordenamiento”
+
+            // 5. Preparamos el próximo clic
+            if (order === 'asc') {
+                sortBtn.dataset.order = 'desc';
+                sortBtn.textContent = 'Ordenar por precio ↓';
+            } else {
+                sortBtn.dataset.order = 'asc';
+                sortBtn.textContent = 'Ordenar por precio ↑';
+            }
+        });
+
+        /* ---------- restaurar distribución original ---------- */
+        clearBtn.addEventListener('click', () => {
+            if (!sortedBox) return;
+
+            // devolvemos cada libro a su galería original
+            [...sortedBox.children].forEach(book => {
+                const parent = document.querySelector(book.dataset.origParent);
+                parent.appendChild(book);
+            });
+
+            // ocultamos contenedor temporal y re-mostramos secciones
+            sortedBox.style.display = 'none';
+            showSections();
+
+            // ocultamos el botón “quitar” hasta la próxima ordenación
+            clearBtn.style.display = 'none';
+        });
+    </script>
+
+    <script>
+        //Cambio de color boton de ordenamiento
+        document.addEventListener("DOMContentLoaded", function () {
+            const sortBtn = document.getElementById("sort-price");
+            const clearBtn = document.getElementById("clear-sort");
+
+            sortBtn.addEventListener("click", function () {
+                sortBtn.classList.add("active");
+                clearBtn.style.display = "inline-block";
+                // Aquí puedes añadir la lógica de ordenamiento
+            });
+
+            clearBtn.addEventListener("click", function () {
+                sortBtn.classList.remove("active");
+                clearBtn.style.display = "none";
+                // Aquí puedes quitar el ordenamiento
+            });
         });
     </script>
 
