@@ -2058,9 +2058,7 @@
 
   window.addEventListener('popstate', () => {    // clic en “atrás” ↓
     if (lightbox.style.display === 'flex') {
-      lightbox.style.display = 'none';
-      lightImg.src = '';
-      document.body.style.overflow = '';
+      closeBox();
     }
   });
 
@@ -2324,7 +2322,7 @@
      RESTABLECER ORDEN CUANDO URL VUELVE A BASE
   ================================================================ */
   window.addEventListener('popstate', () => {
-    if (!location.search) {           // sin parámetros
+    if (!location.search && history.state.lb==1) {           // sin parámetros
       restaurar_orden();
     }
   });

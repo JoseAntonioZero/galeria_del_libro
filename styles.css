@@ -335,7 +335,6 @@ margin-bottom: 0.5rem;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
 #lightbox .details-box {
@@ -370,7 +369,7 @@ margin-bottom: 0.5rem;
   /* se “maximiza” sin fullscreen /
   max-height: 90vh;*/
   border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .4);
 }
 
 #lightbox p[name=author]::before{content: "Autor:  "}
