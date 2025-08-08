@@ -297,8 +297,8 @@ margin-bottom: 0.5rem;
   border: 1px solid #ffe382;
   font-size: 0.99em;
   line-height: 1.5;
-  min-width: 220px;
-  max-width: 340px;
+  min-width: 100px;
+  max-width: 220px;
   pointer-events: none; /* solo permite click-through, excepto para cierre JS */
   opacity: 0;
   transition: opacity 0.22s;
