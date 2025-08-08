@@ -15,11 +15,11 @@
 
   <div id="ordering-controls">
     <div class="left-buttons">
-      <button id="sort-price" data-order="desc">
-        Ordenar por precio
-      </button>
-      <button id="clear-sort" style="display:none">
+              <button id="clear-sort" style="display:none">
         Quitar ordenamiento
+      </button>
+      <button id="sort-price" data-order="desc">
+        Ordenar x precio
       </button>
     </div>
     <div class="right-buttons">
@@ -2001,7 +2001,7 @@
 
 </body>
 
-<!-- =======================  SCRIPT ÚNICO  ======================= -->
+
 <script>
 
   /* ===============================================================
@@ -2172,7 +2172,7 @@
     showSections();
     clearBtn.style.display = 'none';
     sortBtn.classList.remove('active');
-    sortBtn.textContent = 'ORDENAR POR PRECIO';
+    sortBtn.textContent = 'ORDENAR x PRECIO';
   }
 
   sortBtn.addEventListener('click', () => {
@@ -2199,10 +2199,10 @@
 
     if (order === 'asc') {
       sortBtn.dataset.order = 'desc';
-      sortBtn.textContent = 'Ordenar por precio ↓';
+      sortBtn.textContent = 'Ordenar x precio ↓';
     } else {
       sortBtn.dataset.order = 'asc';
-      sortBtn.textContent = 'Ordenar por precio ↑';
+      sortBtn.textContent = 'Ordenar x precio ↑';
     }
   });
 

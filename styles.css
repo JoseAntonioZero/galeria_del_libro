@@ -409,6 +409,12 @@ margin-bottom: 0.5rem;
     max-height: 100vw;
     margin: 0px auto;
   }
+  #ordering-controls {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
 }
 @media (max-width:700px) {
@@ -425,7 +431,7 @@ margin-bottom: 0.5rem;
   }
 
   #lightbox img {
-    margin-top: 1.5rem;
+    margin-top: 0.2rem;
   width: 17rem;
   /* se “maximiza” sin fullscreen /
   max-height: 90vh;*/
@@ -443,7 +449,7 @@ margin-bottom: 0.5rem;
   margin-right: 1rem;
   padding: 0;
   margin-bottom: 0.0rem;
-  margin-top: 0.5rem;
+  margin-top: 0.7rem;
 }
 #lightbox p {
   margin: 0.2rem;
