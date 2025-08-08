@@ -237,11 +237,11 @@ margin-bottom: 0.5rem;
 }
 .close-btn {
   margin-top: 10px;
-  padding: 8px 16px;
+  padding: 0.75rem 1rem;
   background: #c0392b;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -442,10 +442,11 @@ margin-bottom: 0.5rem;
   margin-left: 1rem;
   margin-right: 1rem;
   padding: 0;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.0rem;
+  margin-top: 0.5rem;
 }
 #lightbox p {
-  margin: 0.3rem;
+  margin: 0.2rem;
   width: 17rem;
   /* se “maximiza” sin fullscreen /
   max-height: 90vh;*/
