@@ -315,7 +315,8 @@ margin-bottom: 0.5rem;
   width: 1.2rem;
   height: 1.2rem;
   padding: 0;
-  margin-left: 0.0em;
+  margin-left: 0.0rem;
+  margin-right: 0.4rem;
   border: 2px solid #54aaf8;      /* Azul claro */
   background: transparent;
   color: #54aaf8;                 /* Azul claro para la "i" */
@@ -327,6 +328,28 @@ margin-bottom: 0.5rem;
   outline: none;
   font-style: italic;
 }
+
+.filter-btn {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #222;
+  padding: .5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+  margin-right: .2rem;
+}
+
+.filter-btn.active {
+  background: #0d6efd;   /* color por defecto activo */
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+/* colores por filtro (opcional) */
+.filter-btn.active[data-filter="newbook"]   { background: #7a3ac9; border-color:#7a3ac9; }
+.filter-btn.active[data-filter="nonewbook"] { background: #7a3ac9; border-color:#7a3ac9; }
+.filter-btn.active[data-filter="oldbook"]   { background: #7a3ac9; border-color:#7a3ac9; }
 
 
 

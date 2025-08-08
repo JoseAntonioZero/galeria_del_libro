@@ -2231,40 +2231,57 @@
     /* ===============================================================
        FILTROS POR ESTADO (BOTONES)
     ================================================================ */
-    const filterBtns = document.querySelectorAll('.filter-btn');
+const filterBtns = document.querySelectorAll('.filter-btn');
+// Asegúrate de tener 'books' definido: const books = document.querySelectorAll('.gallery .book');
 
-    function getFilterFromURL() {
-        const params = new URLSearchParams(location.search);
-        return params.get('filtro') || '';
-    }
-    function setFilterToURL(filter, push = true) {
-        const params = new URLSearchParams(location.search);
-        filter ? params.set('filtro', filter) : params.delete('filtro');
-        const newUrl = location.pathname + (params.toString() ? '?' + params.toString() : '');
-        push ? history.pushState({}, '', newUrl) : history.replaceState({}, '', newUrl);
-    }
-    function applyFilter(fromPopstate = false) {
-        const activeFilter = getFilterFromURL();
-        filterBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === activeFilter));
-        books.forEach(book => {
-            book.style.display = !activeFilter || book.classList.contains(activeFilter) ? '' : 'none';
-        });
-        if (!fromPopstate) setFilterToURL(activeFilter);
-    }
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', e => {
-            if (e.target.classList.contains('info-btn')) return;   // ignora clic en ℹ
-            const filter = btn.dataset.filter;
-            setFilterToURL(filter);
-            applyFilter(true);
-        });
-    });
-    applyFilter();                                            // al cargar
-    window.addEventListener('popstate', e => {
-        const params = new URLSearchParams(location.search);
-        if (!params.has('filtro')) return;
-        applyFilter(true);
-    });
+function getFilterFromURL() {
+  const params = new URLSearchParams(location.search);
+  return params.get('filtro') || '';
+}
+
+function setFilterToURL(filter, push = true) {
+  const params = new URLSearchParams(location.search);
+  filter ? params.set('filtro', filter) : params.delete('filtro');
+  const newUrl = location.pathname + (params.toString() ? '?' + params.toString() : '');
+  push ? history.pushState({}, '', newUrl) : history.replaceState({}, '', newUrl);
+}
+
+function applyFilter(fromPopstate = false) {
+  const activeFilter = getFilterFromURL();
+
+  // pinta/despinta los botones
+  filterBtns.forEach(btn => {
+    const isActive = activeFilter && btn.dataset.filter === activeFilter;
+    btn.classList.toggle('active', isActive);
+  });
+
+  // muestra/oculta libros
+  books.forEach(book => {
+    book.style.display = !activeFilter || book.classList.contains(activeFilter) ? '' : 'none';
+  });
+
+  // si no viene de popstate, sincroniza la URL (por si llamas sin setFilterToURL antes)
+  if (!fromPopstate) setFilterToURL(activeFilter);
+}
+
+// Click en botones (ignora ℹ si la tienes por separado)
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', e => {
+    // si tienes botones "info" separados, no llegan aquí
+    const filter = btn.dataset.filter;
+    setFilterToURL(filter);
+    applyFilter(true); // no haga otro pushState
+  });
+});
+
+// al cargar
+applyFilter();
+
+// al volver atrás/adelante: SIEMPRE recalcular (también cuando no hay ?filtro)
+window.addEventListener('popstate', () => {
+  applyFilter(true);
+});
+
 
     /* ===============================================================
        BOTÓN HOME  (limpia búsqueda, filtro y orden sin recargar)
