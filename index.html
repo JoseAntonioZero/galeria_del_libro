@@ -1945,7 +1945,7 @@
             <div class="details">
                 <h3 name="title">La Náusea</h3>
                 <p name="author">Jean Paul Sartre</p>
-                <p name="edit">Planeta</p>
+                <p name="edit">Editorial Sol90</p>
                 <p name="format">Tapa Dura</p>
                 <p name="pages" hidden>240</p>
                 <p name="height" hidden>21.0 cm</p>
@@ -2268,9 +2268,9 @@
     ================================================================ */
     /* Descripciones por tipo */
     const infoTexts = {
-        newbook: 'Libros nuevos, perfectos, sellados.',
-        nonewbook: 'Libros en excelentes condiciones 9/10.',
-        oldbook: 'Libros de colecciones antiguas, pedacitos de historia.'
+        newbook: 'Libros nuevos originales y sellados.',
+        nonewbook: 'Libros originales semi nuevos en excelentes condiciones.',
+        oldbook: 'Libros originales de colecciones antiguas en buen estado, pedacitos de historia.'
     };
 
     let tooltipDiv = null, timeoutId = null;
@@ -2307,13 +2307,13 @@
             const scrollX = window.scrollX || window.pageXOffset;
             tooltipDiv.style.top = (rect.bottom + scrollY + 8) + 'px'; // 8 es separación, ajusta si quieres
             tooltipDiv.style.left = (rect.left + scrollX) + 'px';
-            tooltipDiv.style.transform = 'translateX(-20%)';
+            tooltipDiv.style.transform = 'translateX(-5.5rem)';
 
             /* Mostrar con transición */
             setTimeout(() => tooltipDiv.classList.add('show'), 10);
 
             /* Autocierre en 3 s */
-            timeoutId = setTimeout(closeTooltip, 2000);
+            timeoutId = setTimeout(closeTooltip, 2500);
         });
     });
 
