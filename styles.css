@@ -459,18 +459,15 @@ margin-bottom: 0.5rem;
   gap: 0;
   }
 
-  #lightbox img {
+#lightbox img { 
     margin-top: 0.5rem;
-  width: 17rem;
-  /* se “maximiza” sin fullscreen /
-  max-height: 90vh;*/
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
-  width: 80%; 
-  /*aspect-ratio: 2/3.2;*/
-  height: auto;
-  max-height: 57%;
-  object-fit: scale-down;
+    width: 100%;           /* ocupar todo el ancho disponible */
+    height: auto;          /* mantener proporción real */
+    max-height: none;      /* que no se limite por altura */
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
+    object-fit: none;      /* mostrarla tal cual es */
+    display: block;        /* evitar espacios de imagen inline */
 }
 #lightbox h3 {
   text-align: center;
