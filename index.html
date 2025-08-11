@@ -641,7 +641,7 @@
                 <p name="pages" hidden>752</p>
                 <p name="height" hidden>19.0 cm</p>
                 <p name="width" hidden>12.5 cm</p>
-                <p name="isbn" hidden>9788491050063</p>
+                <p name="isbn" hidden>9789588925295</p>
                 <p name="price">s/ 55</p>
                 <p name="state" hidden>Nuevo</p>
                 <button class="buy-btn">COMPRAR</button>
@@ -688,7 +688,7 @@
         <div class="book newbook">
             <img alt="#" src="https://m.media-amazon.com/images/I/81u8RSD9R7L._AC_UF1000,1000_QL80_.jpg" />
             <div class="details">
-                <h3 name="title">La ciudad y los Perros</h3>
+                <h3 name="title">La Ciudad y los Perros</h3>
                 <p name="author">Mario Vargas Llosa</p>
                 <p name="edit">Alfaguara</p>
                 <p name="format">Tapa Blanda con Solapas</p>
@@ -1190,7 +1190,7 @@
         </div>
 
         <div class="book newbook">
-            <img alt="#" src="http://prodimage.images-bn.com/pimages/9786073834414_p0_v1_s1200x630.jpg" />
+            <img alt="#" src="https://prodimage.images-bn.com/pimages/9786073834414_p0_v1_s1200x630.jpg" />
             <div class="details">
                 <h3 name="title">Opresión y Resistencia</h3>
                 <p name="author">George Orwell</p>
@@ -1451,7 +1451,7 @@
         <div class="book nonewbook">
             <img alt="#" src="https://m.media-amazon.com/images/I/61UvGIpfsoL._AC_UF1000,1000_QL80_.jpg" />
             <div class="details">
-                <h3 name="title">La ciudad y los Perros</h3>
+                <h3 name="title">La Ciudad y los Perros</h3>
                 <p name="author">Mario Vargas Llosa</p>
                 <p name="edit">Debolsillo</p>
                 <p name="format">Tapa Blanda</p>
@@ -2109,9 +2109,7 @@
 
 </body>
 
-
 <script>
-
     /* ===============================================================
        LIGHTBOX
     ================================================================ */
@@ -2150,7 +2148,7 @@
 
             lightbox.style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            history.pushState({ lb: 1 }, '');        // añade estado al historial
+            history.pushState({ lb: 1 }, '');
         }
         bookImg.addEventListener('click', openLightbox);
         bookTitle.addEventListener('click', openLightbox);
@@ -2160,16 +2158,15 @@
         lightbox.style.display = 'none';
         lightImg.src = '';
         document.body.style.overflow = '';
-        if (history.state && history.state.lb) history.back(); // vuelve atrás
+        if (history.state && history.state.lb) history.back();
     }
     document.addEventListener('keyup', e => { if (e.key === 'Escape') closeBox(); });
 
-    window.addEventListener('popstate', () => {    // clic en “atrás” ↓
+    window.addEventListener('popstate', () => {
         if (lightbox.style.display === 'flex') {
             closeBox();
         }
     });
-
 
     /* ===============================================================
        COMPRA POR WHATSAPP DESDE GALERÍA O LIGHTBOX
@@ -2189,7 +2186,9 @@
         const prc = book.querySelector('[name="price"]').textContent.trim();
         const stad = book.querySelector('[name="state"]').textContent.trim();
 
-        const text = encodeURIComponent(extraMsg + '\n' + [title, ed, stad, prc].join('\n') + '\n' + ' Me podría hacer algún descuento?');
+        const text = encodeURIComponent(
+            extraMsg + '\n' + [title, ed, stad, prc].join('\n') + '\n' + ' Me podría hacer algún descuento?'
+        );
         window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     });
 
@@ -2207,17 +2206,37 @@
     const fuse = new Fuse(dataset, { keys: ['title', 'meta'], threshold: 0.4 });
     const $input = document.getElementById('buscador');
 
-    function mostrarResultados(q) {
-        const matches = q ? fuse.search(q).map(r => r.item.el) : books;
-        books.forEach(el => el.style.display = 'none');
-        matches.forEach(el => el.style.display = '');
+    // estado de búsqueda + render conjunto búsqueda ∩ filtro
+    let matchSet = new Set(books);
+    function renderBooks() {
+        const activeFilter = getFilterFromURL();
+        books.forEach(book => {
+            const byFilter = !activeFilter || book.classList.contains(activeFilter);
+            const bySearch = matchSet.has(book);
+            book.style.display = (byFilter && bySearch) ? '' : 'none';
+        });
     }
 
+    function mostrarResultados(q) {
+        const matches = q ? fuse.search(q).map(r => r.item.el) : books;
+        matchSet = new Set(matches);
+        renderBooks();
+    }
+
+    // AL BUSCAR: limpia cualquier filtro activo
     $input.addEventListener('keydown', e => {
         if (e.key !== 'Enter') return;
         const q = e.target.value.trim();
-        history.pushState({ query: q }, '', q ? `?q=${encodeURIComponent(q)}` : location.pathname);
+
+        const params = new URLSearchParams(location.search);
+        q ? params.set('q', q) : params.delete('q');
+        params.delete('filtro');                    // ← limpia el filtro activo en la URL
+        history.pushState({ query: q }, '',
+            location.pathname + (params.toString() ? '?' + params.toString() : '')
+        );
+
         mostrarResultados(q);
+        applyFilter(true);                          // ← repinta sin filtro
         hideFilters(q);
         $input.blur();
     });
@@ -2229,8 +2248,6 @@
         mostrarResultados(q);
         hideFilters(q);
     }
-    restaurarBusquedaDesdeURL();                         // al cargar
-    window.addEventListener('popstate', restaurarBusquedaDesdeURL);
 
     /* ===============================================================
        ORDENAMIENTO POR PRECIO ASC / DESC
@@ -2294,9 +2311,8 @@
             }
         });
 
-        const order = sortBtn.dataset.order;          // asc | desc
-        const sorted = allBooks.sort((a, b) => order === 'asc' ? getPrice(a) - getPrice(b)
-            : getPrice(b) - getPrice(a));
+        const order = sortBtn.dataset.order; // asc | desc
+        const sorted = allBooks.sort((a, b) => order === 'asc' ? getPrice(a) - getPrice(b) : getPrice(b) - getPrice(a));
         hideSections();
         sortedBox.innerHTML = '';
         sorted.forEach(b => sortedBox.appendChild(b));
@@ -2338,24 +2354,26 @@
             const isActive = activeFilter && btn.dataset.filter === activeFilter;
             btn.classList.toggle('active', isActive);
         });
-
-        books.forEach(book => {
-            book.style.display = !activeFilter || book.classList.contains(activeFilter) ? '' : 'none';
-        });
+        renderBooks();
         if (!fromPopstate) setFilterToURL(activeFilter);
     }
+
     filterBtns.forEach(btn => {
         btn.addEventListener('click', e => {
-            if (e.target.classList.contains('info-btn')) return;   // ignora clic en ℹ
+            if (e.target.classList.contains('info-btn')) return;
             const filter = btn.dataset.filter;
             setFilterToURL(filter);
             applyFilter(true);
         });
     });
-    applyFilter();                                            // al cargar
-    window.addEventListener('popstate', e => {
-        const params = new URLSearchParams(location.search);
-        if (!params.has('filtro')) return;
+
+    // Carga inicial
+    restaurarBusquedaDesdeURL();
+    applyFilter(true);
+
+    // Popstate unificado
+    window.addEventListener('popstate', () => {
+        restaurarBusquedaDesdeURL();
         applyFilter(true);
     });
 
@@ -2363,7 +2381,7 @@
        BOTÓN HOME  (limpia búsqueda, filtro y orden sin recargar)
     ================================================================ */
     document.getElementById('home-btn').addEventListener('click', () => {
-        history.pushState({}, '', location.pathname);     // URL base
+        history.pushState({}, '', location.pathname);
         restaurar_orden();
         applyFilter(true);
         mostrarResultados('');
@@ -2373,7 +2391,6 @@
     /* ===============================================================
        TOOLTIP INFO ESTADOS
     ================================================================ */
-    /* Descripciones por tipo */
     const infoTexts = {
         newbook: 'Libros nuevos originales y sellados.',
         nonewbook: 'Libros originales semi nuevos en excelentes condiciones.',
@@ -2390,72 +2407,51 @@
         if (timeoutId) clearTimeout(timeoutId);
     }
 
-    /* Listener para cada botón ℹ */
     document.querySelectorAll('#filters .info-btn').forEach(btn => {
         btn.addEventListener('click', e => {
             e.stopPropagation();
-            closeTooltip();                                     // cierra el anterior
+            closeTooltip();
 
-            /* === crea el tooltip === */
-            tooltipDiv = document.createElement('div');
-            tooltipDiv.className = 'filter-tooltip';
+            const el = document.createElement('div');
+            el.className = 'filter-tooltip';
+            tooltipDiv = el;
 
-            /* Obtén el tipo: es el botón de filtro inmediatamente anterior */
             let prev = btn.previousElementSibling;
             while (prev && !prev.classList.contains('filter-btn')) prev = prev.previousElementSibling;
             const type = prev ? prev.dataset.filter : '';
-            tooltipDiv.textContent = infoTexts[type] || 'Sin descripción.';
+            el.textContent = infoTexts[type] || 'Sin descripción.';
 
-            document.body.appendChild(tooltipDiv);
+            document.body.appendChild(el);
 
-            /* Posición al costado del botón */
             const rect = btn.getBoundingClientRect();
             const scrollY = window.scrollY || window.pageYOffset;
             const scrollX = window.scrollX || window.pageXOffset;
-            tooltipDiv.style.top = (rect.bottom + scrollY + 8) + 'px'; // 8 es separación, ajusta si quieres
-            tooltipDiv.style.left = (rect.left + scrollX) + 'px';
-            tooltipDiv.style.transform = 'translateX(-5.5rem)';
+            el.style.top = (rect.bottom + scrollY + 8) + 'px';
+            el.style.left = (rect.left + scrollX) + 'px';
+            el.style.transform = 'translateX(-5.5rem)';
 
-            /* Mostrar con transición */
-            setTimeout(() => tooltipDiv.classList.add('show'), 10);
-
-            /* Autocierre en 3 s */
+            setTimeout(() => el.classList.add('show'), 10);
             timeoutId = setTimeout(closeTooltip, 2500);
         });
     });
 
-    /* Cierra si haces click fuera */
     document.addEventListener('click', e => {
         if (tooltipDiv && !tooltipDiv.contains(e.target) && !e.target.classList.contains('info-btn')) {
             closeTooltip();
         }
     });
-
-    /* Cierra si haces scroll */
     window.addEventListener('scroll', closeTooltip);
 
     /* ===============================================================
        RESTABLECER ORDEN CUANDO URL VUELVE A BASE
     ================================================================ */
     window.addEventListener('popstate', () => {
-        /*if (!location.search && history.state.lb == 1) {           // sin parámetros
-            //restaurar_orden();
-            // Quitar la clase 'active' a cada uno
-
-        }*/
-        // Capturar todos los elementos con la clase 'filtern-btn'
         if (!location.search) {
-            filterBtns.forEach(btn => {
-                btn.classList.remove('active');
-            });
-
+            filterBtns.forEach(btn => btn.classList.remove('active'));
         }
-
-
-
     });
-
 </script>
+
 
 
 </html>
