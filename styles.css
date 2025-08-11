@@ -379,8 +379,8 @@ margin-bottom: 0.5rem;
 /* lightbox oculto */
 #lightbox {
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-  padding: 24px 32px;
-  margin: 40px auto;
+  padding: 0px 32px;
+  margin: 0px auto;
   gap: 24px; /* Espacio entre imagen y detalles */
   position: fixed;
   inset: 0;
@@ -463,11 +463,12 @@ margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     width: 100%;           /* ocupar todo el ancho disponible */
     height: auto;          /* mantener proporción real */
-    max-height: none;      /* que no se limite por altura */
+    max-height: 57%;      /* que no se limite por altura */
     border-radius: 6px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, .4);
-    object-fit: none;      /* mostrarla tal cual es */
+    object-fit: contain;      /* mostrarla tal cual es */
     display: block;        /* evitar espacios de imagen inline */
+    max-width: 17rem;
 }
 #lightbox h3 {
   text-align: center;
