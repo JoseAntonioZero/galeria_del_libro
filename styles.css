@@ -506,8 +506,12 @@ margin-bottom: 0.5rem;
   #lightbox h3{
     margin: 0.1rem;
   }
+  #lightbox .details{
+    margin-top: 0;
+  }
 
   .book img{
+    margin-top: 0;
     max-height: 80vw;
 
   }
