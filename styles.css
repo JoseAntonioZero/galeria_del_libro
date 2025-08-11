@@ -494,13 +494,22 @@ margin-bottom: 0.5rem;
 }
 
 @media (max-height:500px) {
+  #lightbox{
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  #lightbox p{
+    margin: 0.2rem;
+  }
+  
+  #lightbox h3{
+    margin: 0.1rem;
+  }
 
   .book img{
     max-height: 80vw;
 
   }
 
-  #lightbox p{
-    margin: 0.2rem;
-  }
 }
